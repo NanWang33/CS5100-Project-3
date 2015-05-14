@@ -1,0 +1,217 @@
+<html>
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+body { font-family: "Open Sans"; } div { margin: 30px; }
+svg { border: solid black 1px; }
+.axis path { fill: none; stroke: #777; }
+.axis line { stroke: #777; }
+rect {
+          animation-name: fill;
+          animation-duration: 10s;
+      }
+</style>
+</head>
+<body>
+
+<div id="canvas"></div>
+
+<script>
+//change these numbers to make it scalable
+var svgheight = 450
+var svgwidth = 800
+var height = 450
+var width = 450
+var padding = 80
+var labelFontSize = 15
+var stokeWidth = 5
+var dasharray = "10,10"
+
+
+var users;
+var xScale;
+var yScale;
+
+var svg = d3.select("#canvas").append("svg")
+	.attr("height", svgheight)
+	.attr("width", svgwidth);
+var labels = svg.append("g").attr("class", "labels");
+
+
+var maxYear = 7 //year: 0-6
+var maxHour = 5 //hour: 0-4
+var maxRank = 8 //rank: 0-7
+
+d3.csv("formatData.csv", function (error, data) {
+	users = data;
+	
+	//chooseStyle("years", "rank1");
+	// chooseStyle("years", "rank2");
+	// chooseStyle("years", "rank3");
+	 	chooseStyle("hours", "rank1");
+	// chooseStyle("hours", "rank2");
+	// chooseStyle("hours", "rank3");
+	
+});
+
+var chooseStyle = function(xx, yy){
+	if( xx == "years"){ setXYscale(maxYear, maxRank) }
+	else{ setXYscale(maxHour, maxRank) }
+	drawSquares(xx,yy)		
+	setXLabel(xx)
+	setYLabel("rank")	
+	creatLine(xx, yy)
+}
+var setXYscale = function(xx, yy){
+	xScale = d3.scale.linear().domain([0,xx])
+	.range([padding, width-padding]);
+	yScale = d3.scale.linear().domain([0, yy])
+	.range([height-padding,padding]);
+
+	var xAxis = d3.svg.axis().scale(xScale)
+	.orient("bottom");
+	var yAxis = d3.svg.axis().scale(yScale)
+	.orient("left");
+	
+	svg.append("g").attr("class", "axis")
+	.attr("transform", "translate(0," + (width - padding) + ")")
+	.call(xAxis);
+	svg.append("g").attr("class", "axis")
+	.attr("transform", "translate(" + padding + ",0)")
+	.call(yAxis);
+}
+
+var setXLabel = function(tt){
+	labels.append("text")						
+		.attr("x", width-padding/2)
+		.attr("y", height-padding)
+		.attr("font-size", labelFontSize)
+		.attr("text-anchor", "middle")		
+		.text(tt);
+}
+
+var setYLabel = function(tt){
+	labels.append("text")
+		.attr("x", padding*3/4)
+		.attr("y", padding*3/4)
+		.attr("font-size", labelFontSize)
+		.attr("text-anchor", "middle")
+		.text(tt);
+}
+
+var drawSquares = function(xx, yy){
+	var squares = svg.selectAll("rect").data(users)
+		.enter().append("rect");
+	if(xx == "years"){
+		squares.attr("x", function(d) { return xScale(d.years) })
+			.attr("width", function(d) { return (width-padding-padding)/(maxYear+1) })		
+	}else{
+		squares.attr("x", function(d) { return xScale(d.hours) })
+		.attr("width", function(d) { return (width-padding-padding)/(maxHour+1) })
+	}
+	if(yy == "rank1"){
+		squares.attr("y", function(d) { return yScale(d.rank1) })
+	}else if (yy == "rank2"){
+		squares.attr("y", function(d) { return yScale(d.rank2) })
+	}else{
+		squares.attr("y", function(d) { return yScale(d.rank3) })
+	}
+
+	squares.attr("rx", width/50).attr("ry", height/50)
+		.attr("height", function(d) { return (height-padding-padding)/(maxRank+1) })
+		.attr("transform", "translate(0,"+ -(height-padding-padding)/(maxRank+1) + ")" )
+		.attr("opacity", 0.1);
+		
+
+	switch (yy){
+		case "rank1":
+			squares.attr("fill", "green"); break;
+		case "rank2":
+			squares.attr("fill", "purple"); break;
+		case "rank3":
+			squares.attr("fill", "blue"); break;
+	}
+}
+
+var creatLine = function(xx, yy){
+	var model = {};
+	var meanX;
+	var meanY;
+	
+	if(xx == "years" && yy == "rank1"){
+		meanX = d3.mean(users, function (d) { return d.years;});
+		meanY = d3.mean(users, function (d) { return d.rank1;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.rank1 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.years - meanX);
+		});
+	}else if (xx == "years" && yy == "rank2"){
+		meanX = d3.mean(users, function (d) { return d.years;});
+		meanY = d3.mean(users, function (d) { return d.rank2;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.rank2 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.years - meanX);
+		});
+	}else if (xx == "years" && yy == "rank3"){
+		meanX = d3.mean(users, function (d) { return d.years;});
+		meanY = d3.mean(users, function (d) { return d.rank3;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.rank3 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.years - meanX) * (d.years - meanX);
+		});
+	}else if (xx == "hours" && yy == "rank1"){
+		meanX = d3.mean(users, function (d) { return d.hours;});
+		meanY = d3.mean(users, function (d) { return d.rank1;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.rank1 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.hours - meanX);
+		});
+	}else if (xx == "hours" && yy == "rank2"){
+		meanX = d3.mean(users, function (d) { return d.hours;});
+		meanY = d3.mean(users, function (d) { return d.rank2;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.rank2 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.hours - meanX);
+		});
+	}else{
+		meanX = d3.mean(users, function (d) { return d.hours;});
+		meanY = d3.mean(users, function (d) { return d.rank3;});
+		model.slope = d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.rank3 - meanY);
+		});
+		model.slope /= d3.sum(users, function (d) {
+			return (d.hours - meanX) * (d.hours - meanX);
+		});
+	}
+
+	model.intercept = meanY - model.slope * meanX;
+	var regressionLine = svg.append("line")
+							.attr("x1", xScale(0))
+							.attr("y1", yScale(model.slope * 0 + model.intercept))
+							.style("stroke", "black")
+							.style("stroke-width", stokeWidth)
+							.style("stroke-dasharray", dasharray);
+
+	if(xx == "years"){
+		regressionLine.attr("x2", xScale(maxYear))
+					.attr("y2", yScale(model.slope * maxYear + model.intercept))
+	}else{
+		regressionLine.attr("x2", xScale(maxHour))
+					.attr("y2", yScale(model.slope * maxHour+ model.intercept))
+	}
+}
+</script>
+
+</body>
+</html>

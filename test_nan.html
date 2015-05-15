@@ -3,10 +3,19 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
-body { font-family: "Open Sans"; } div { margin: 30px; }
+		html, body { height: 100%; width: 100%; margin: 0; }
+			#barchart {width: 40%; height: 60%; opacity:1; background-color: #fff;}
+			#barbutton {
+			 	position: relative;
+			    left: 30%;
+			    top: 30%;
+			}
+body { font-family: "Open Sans"; } 
+
 svg { border: solid black 1px; }
 .axis path { fill: none; stroke: #777; }
 .axis line { stroke: #777; }
+
 button {
   border: 2px solid grey;
   background: white;
@@ -55,6 +64,14 @@ p {
 <button id="rank1">3 VS 3</button>
 <button id="rank3">5 VS 5</button>
 <button id="rank2">Solo</button>
+</div>
+<div id = "barchart">
+	<div id="barbutton">
+		<p>Choose game type:</p>
+		<button id="barrank1">3 VS 3</button>
+		<button id="barrank3">5 VS 5</button>
+		<button id="barrank2">Solo</button>
+	</div>
 </div>
 <script>
 //change these numbers to make it scalable
@@ -105,7 +122,37 @@ d3.csv("formatData.csv", function (error, data) {
 		chooseStyle(defaultX, "rank3");
 		defaultY = "rank3";
 	});
-	
+	var by = function(name,minor){
+		return function(o, p){
+			var a, b;
+			if (typeof o === "object" && typeof p === "object" && o && p) {
+					a = o[name];
+					b = p[name];
+					if (a === b) {return typeof minor==='function' ?minor(o,p):0;}
+					if (typeof a === typeof b) { return a < b ? -1 : 1;}
+					return typeof a < typeof b ? -1 : 1;
+					}
+			else {throw ("error"); }
+		}
+	}
+	data.sort(by("rank2",by("age")));
+	//console.log(data);
+		ageRank(data,"rank2");
+	d3.select("#barrank1").on("click", function () {
+		data.sort(by("rank1",by("age")));
+	//console.log(data);
+		ageRank(data,"rank1");
+	});
+	d3.select("#barrank2").on("click", function () {
+		data.sort(by("rank3",by("age")));
+	//console.log(data);
+		ageRank(data,"rank3");
+	});
+	d3.select("#barrank3").on("click", function () {
+		data.sort(by("rank2",by("age")));
+	//console.log(data);
+		ageRank(data,"rank2");
+	});	
 });
 
 var chooseStyle = function(xx, yy){
@@ -425,7 +472,79 @@ var creatLine = function(xx, yy){
 		}
 
 	}
-
+		function ageblock (x){
+			if(x<=18) return 1;
+			else if(x<=21) return 2;
+			else if(x<=24) return 3;
+			else if(x<=27) return 4;
+			else return 5;
+		}
+		function color(x){
+			switch(x){
+				case 0: 
+					return "pink"; 
+					break; 
+				case 1: 
+					return "orange"
+					break; 
+				case 2: 
+					return "red"
+					break; 
+				case 3: 
+					return "blue"; 
+					break;
+				case 4: 
+					return "purple"; 
+					break; 
+				case 5: 
+					return "green";
+					break;
+				default:
+					return "black";
+			}
+		}
+		function ageRank(data,rank){
+			d3.select("#barchart").select("svg").remove();
+			var width = 1.8;
+			var x = -1 ;
+			var y = -1 ;
+			var lastageblock=-1;
+			var yValue = new Array;
+			var lastrank=-1;
+			var svg = d3.select("#barchart").append("svg")
+				  		.attr("width", "100%")
+				  		.attr("height", "100%");
+				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","95%").attr("y2","90%").style("stroke-width",2).style("stroke","black");
+				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","10%").attr("y2","10%").style("stroke-width",2).style("stroke","black");
+				//svg.append("rect").attr("x","15%").attr("y","85%").attr("height","5%").attr("width","5%").attr("fill","red");
+				var rect = svg.selectAll(".rectangle").data(data).enter().append('g');
+				rect.attr("class","rectangle").append("rect")
+					.attr("x",function(d,i){
+						if(parseInt(d[rank])!=lastrank) {y = 0; x = 0;}
+ 						var xx = 10+parseInt(d[rank])*10.5+x*2;
+ 						var yy = 88-1.5*y;
+ 						lastageblock = ageblock(parseInt(d.age));
+ 						yValue[i] = yy;
+ 						if(x==4) {x=0;y++;}
+ 						else x++;
+ 						lastrank = parseInt(d[rank]);
+ 						return xx+"%";
+ 					})
+ 					.attr("y",function(d,i){
+ 						var yy = yValue[i];
+ 						return yy+"%";
+ 					})
+ 					.attr("width",width+"%")
+ 					.attr("height",width-0.5+"%")
+ 					.attr("fill",function(d){
+ 						return color(ageblock(parseInt(d.age)));
+ 					})
+ 					.on("click",function(d){
+ 						console.log(d.age);
+ 						console.log(d.rank1);
+ 						console.log(d.gender);
+ 					});
+		}
 </script>
 
 </body>

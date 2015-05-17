@@ -195,6 +195,9 @@ var chooseStyle = function(xx, yy){
 	creatLine(xx, yy)
 	addLegend(xx);
 }
+var xtickyear = ["0","<0.5","<1","<2","<3","<4","<5"];
+var xtickhours = ["0","","<5","","<10","","<15","","<20"];
+var yticks = ["Unranked","Bronze","Silver","Gold","Platinum","Diamond","Masters","Challenger"];
 var setXYscale = function(xx, yy){
 	xScale = d3.scale.linear().domain([0,xx])
 	.range([padding, width-padding]);
@@ -202,9 +205,15 @@ var setXYscale = function(xx, yy){
 	.range([height-padding,padding]);
 
 	var xAxis = d3.svg.axis().scale(xScale)
-	.orient("bottom");
+	.orient("bottom").tickFormat(function(d,i){
+		if(xx==maxYear)
+		return xtickyear[i];
+		else return xtickhours[i];
+	});
 	var yAxis = d3.svg.axis().scale(yScale)
-	.orient("left");
+	.orient("left").tickFormat(function(d,i){
+		return yticks[i];
+	});
 	
 	svg.append("g").attr("class", "axis")
 	.attr("transform", "translate(0," + (width - padding) + ")")
@@ -212,6 +221,7 @@ var setXYscale = function(xx, yy){
 	svg.append("g").attr("class", "axis")
 	.attr("transform", "translate(" + padding + ",0)")
 	.call(yAxis);
+	d3.selectAll(".tick").style("font-size","10");
 }
 
 var setXLabel = function(tt){

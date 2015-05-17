@@ -3,13 +3,13 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
-		html, body { height: 100%; width: 100%; margin: 0; }
-			#barchart {width: 40%; height: 60%; opacity:1; background-color: #fff;}
-			#barbutton {
-			 	position: relative;
-			    left: 30%;
-			    top: 30%;
-			}
+html, body { height: 100%; width: 100%; margin: 0; }
+#barchart {width: 40%; height: 60%; opacity:1; background-color: #fff;}
+#barbutton {
+ 	position: relative;
+    left: 30%;
+    top: 30%;
+}
 body { font-family: "Open Sans"; } 
 
 svg { border: solid black 1px; }
@@ -101,24 +101,40 @@ d3.csv("formatData.csv", function (error, data) {
 	
 	var defaultX = "years";
 	var defaultY = "rank1";
+	d3.select("#years").style("background","grey");
+	d3.select("#rank1").style("background","grey");
+	d3.select("#barrank2").style("background","grey");
 	chooseStyle(defaultX, defaultY);
 	d3.select("#years").on("click", function () {
+		d3.select(this).style("background","grey");
+		d3.select("#hours").style("background","white");
 		chooseStyle("years", defaultY);
 		defaultX = "years";
 	});
 	d3.select("#hours").on("click", function () {
+		d3.select(this).style("background","grey");
+		d3.select("#years").style("background","white");
 		chooseStyle("hours", defaultY);
 		defaultX = "hours";
 	});
 	d3.select("#rank1").on("click", function () {
+		d3.select(this).style("background","grey");
+		d3.select("#rank2").style("background","white");
+		d3.select("#rank3").style("background","white");
 		chooseStyle(defaultX, "rank1");
 		defaultY = "rank1";
 	});
 	d3.select("#rank2").on("click", function () {
+		d3.select(this).style("background","grey");
+		d3.select("#rank1").style("background","white");
+		d3.select("#rank3").style("background","white");
 		chooseStyle(defaultX, "rank2");
 		defaultY = "rank2";
 	});
 	d3.select("#rank3").on("click", function () {
+		d3.select(this).style("background","grey");
+		d3.select("#rank2").style("background","white");
+		d3.select("#rank1").style("background","white");
 		chooseStyle(defaultX, "rank3");
 		defaultY = "rank3";
 	});
@@ -138,21 +154,30 @@ d3.csv("formatData.csv", function (error, data) {
 	data.sort(by("rank2",by("age")));
 	//console.log(data);
 		ageRank(data,"rank2");
-	d3.select("#barrank1").on("click", function () {
-		data.sort(by("rank1",by("age")));
-	//console.log(data);
-		ageRank(data,"rank1");
-	});
-	d3.select("#barrank2").on("click", function () {
-		data.sort(by("rank3",by("age")));
-	//console.log(data);
-		ageRank(data,"rank3");
-	});
-	d3.select("#barrank3").on("click", function () {
-		data.sort(by("rank2",by("age")));
-	//console.log(data);
-		ageRank(data,"rank2");
-	});	
+		d3.select("#barrank1").on("click", function () {
+			d3.select(this).style("background","grey");
+			d3.select("#barrank2").style("background","white");
+			d3.select("#barrank3").style("background","white");
+			data.sort(by("rank1",by("age")));
+		//console.log(data);
+			ageRank(data,"rank1");
+		});
+		d3.select("#barrank2").on("click", function () {
+			d3.select(this).style("background","grey");
+			d3.select("#barrank1").style("background","white");
+			d3.select("#barrank3").style("background","white");
+			data.sort(by("rank2",by("age")));
+		//console.log(data);
+			ageRank(data,"rank2");
+		});
+		d3.select("#barrank3").on("click", function () {
+			d3.select(this).style("background","grey");
+			d3.select("#barrank2").style("background","white");
+			d3.select("#barrank1").style("background","white");
+			data.sort(by("rank3",by("age")));
+		//console.log(data);
+			ageRank(data,"rank3");
+		});
 });
 
 var chooseStyle = function(xx, yy){
@@ -516,6 +541,7 @@ var creatLine = function(xx, yy){
 				  		.attr("height", "100%");
 				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","95%").attr("y2","90%").style("stroke-width",2).style("stroke","black");
 				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","10%").attr("y2","10%").style("stroke-width",2).style("stroke","black");
+				svg.append("text").attr("x","95%").attr("y","95%").text("rank");
 				//svg.append("rect").attr("x","15%").attr("y","85%").attr("height","5%").attr("width","5%").attr("fill","red");
 				var rect = svg.selectAll(".rectangle").data(data).enter().append('g');
 				rect.attr("class","rectangle").append("rect")

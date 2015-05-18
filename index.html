@@ -4,63 +4,29 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
 html, body { 
-	width: 100% 
-	margin: 2% 
+	height: 100%; 
+	width: 100%; 
+	margin: 1%; 
 	font-family: "Open Sans";
 	}
 	
+
+	
+#barchartenvelope {
+	position: relative;
+	}
+	
+#barbutton {
+ 	position: absolute;
+    left: 1%;
+    top: 78%;
+	height: 100px;
+}
+
 svg { border: solid black 0px; }
 .axis path { fill: none; stroke: #777; }
-.axis line { stroke: #777; }	
+.axis line { stroke: #777; }
 
-
-p {
-	line-height: 30%;
-}
-p.title {
-	line-height: 100%;
-}
-	
-/* svgs divs */	
-
-#canvas {
-	float: left;	
-	width: 550px;
-	align: left;
-}
-	
-#barchart {
-	float: left;	
-	width: 550px; 
-	opacity:1; 
-	background-color: #fff;	
-	align: left;
-	}
-
-#pie{
-	float: left;	
-	width: 550px;
-	align: left; 
-}
-	
-/* structural divs */
-
-.outside {
-	float:left;	
-	border: solid black 1px;
-	width: 100%;
-	align: left;
-}
-
-.graphtitle {
-	float: left;	
- 	text-align: left;	
-  	font: 18px sans-serif;	
-  	font-weight:bold;
-  	color: black;
- }
-
-/* buttons */	
 button {
   border: 2px solid grey;
   background: white;
@@ -72,9 +38,32 @@ button {
   vertical-align: middle;
   margin:4px;
 }
+#buttonlist1 {
+ 	position: absolute;
+    left: 450px;
+    top: 50px;
 
-.buttonsdiv { 
-	float: left;
+}
+#buttonlist2 {
+ 	position: absolute;
+    left: 450px;
+    top: 130px;
+}
+#buttonlist3 {
+ 	position: absolute;
+    left: 450px;
+    top: 175px;
+}
+p {
+	line-height: 30%;
+}
+p.title {
+	line-height: 100%;
+}
+
+#correlation{
+	position: relative;
+	border: solid black 1px;
 }
 
 /* pie styles */
@@ -82,58 +71,78 @@ button {
 	stroke: #fff;
 }
 
+#piegroup{
+	position: relative;
+	width: 40%;
+	height: 100%;
+	border: solid black 1px;
+}
+
+#pie{
+	position: absolute;	
+}
 #pietooltip{
 	position: relative;		
  	font: 20px sans-serif;	
  	font-weight:bold;
  	color: #0D2C3D;
-	width: 20px;
+	width: 10%;
  }
-/*this needs to change to the graphtitle */
+
 #pietitle {
-	float: left;	
+	position: absolute;	
  	text-align: left;	
   	font: 18px sans-serif;	
   	font-weight:bold;
   	color: black;
+	width: 100%;
  }
 
+.graphtitle {
+	position: absolute;	
+ 	text-align: left;	
+  	font: 18px sans-serif;	
+  	font-weight:bold;
+  	color: black;
+	width: 100%;
+ }
+
+#piebuttonlist {
+  	position: absolute;
+    left: 1%;
+    top: 78%;
+	height: 100px;
+}
 
 </style>
 </head>
 <body>
 <h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
-
 <p>Authors: </p>
 <p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
 
-<div class="outside">
-	<p align=left>
-	<div class="graphtitle">Gamers by Gaming Habits and Rank</div><br>
-    </p>
-    <p align=left>
-	<div id="canvas"></div>
-    <div class="buttonsdiv">
-    	<p>Choose time span or frequency:</p>
-			<button id="years">How many years playing</button>
-		<P>
-			<button id="hours">How many hours a week playing</button>
-		<p>Choose game type:</p>
-			<button id="rank1">3 VS 3</button>
-			<button id="rank3">5 VS 5</button>
-			<button id="rank2">Solo</button>	
-	</div>
-
+<div id="correlation">
+<div class="graphtitle">Gamers by Gaming Habits and Rank</div>
+<div id="canvas"></div>
+<div id="buttonlist1">
+<p>Choose time span or frequency:</p>
+<button id="years">How many years playing</button>
 </div>
-
+<div id="buttonlist2">
+<button id="hours">How many hours a week playing</button>
+</div>
+<div id="buttonlist3">
+<p>Choose game type:</p>
+<button id="rank1">3 VS 3</button>
+<button id="rank3">5 VS 5</button>
+<button id="rank2">Solo</button>
+</div>
+</div>
 <p>
-
-<div class="outside">
-<p align=left>
-<div class="graphtitle">Gamers by Age and Rank</div></p>
-<p align=left>
+<div id = "barchartenvelope" >
 <div id = "barchart"></div>
-	<div class="buttonsdiv">
+<div class="graphtitle">Gamers by Age and Rank</div>
+	<div id="barbutton">
 		<p>Choose game type:</p>
 		<button id="barrank1">3 VS 3</button>
 		<button id="barrank3">5 VS 5</button>
@@ -141,12 +150,10 @@ button {
 	</div>
 </div>
 <p>
-<div class="outside">
-<p align=left>
-	<div id="pietitle">Gamers by Age, Gender or Country (Select Slice to Explore)</div></p>
-    <p align=left>
+<div id="piegroup">
 	<div id="pie"></div>
-	<div class="buttonsdiv">
+	<div id="pietitle" ></div>
+	<div id="piebuttonlist">
 	<p>Choose gamer grouping:</p>
 	<button id="age">Age</button>
 	<button id="gender">Gender</button>
@@ -157,14 +164,14 @@ button {
 
 <script>
 //change these numbers to make it scalable
-var svgheight = 450;
-var svgwidth = 800;
-var height = 450;
-var width = 450;
-var padding = 80;
-var labelFontSize = 15;
-var stokeWidth = 5;
-var dasharray = "10,10";
+var svgheight = 450
+var svgwidth = 800
+var height = 450
+var width = 450
+var padding = 80
+var labelFontSize = 15
+var stokeWidth = 5
+var dasharray = "10,10"
 
 var users;
 var xScale;
@@ -179,8 +186,8 @@ var labels;
 var legend;
 
 // PIE CONTROLS START
-var pwidth = 550,
-    pheight = 450,
+var pwidth = screen.width*0.8,
+    pheight = screen.height*0.6,
     radius = Math.min(pwidth, pheight) / 2;
 
 var piecolor = d3.scale.ordinal()

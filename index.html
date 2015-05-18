@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Correlation Between League of Legends (LoL) Player Rank and Length of Gaming</title>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
@@ -91,12 +92,13 @@ button {
 	stroke: #fff;
 }
 
-#pietooltip{
-	position: relative;		
+#pietooltip{	
+	float: left;
  	font: 1.2em sans-serif;	
  	font-weight:bold;
  	color: #0D2C3D;
-	width: 20px;
+	width:200px;
+	margin-top:35px;
  }
 
 #pietitle {
@@ -118,14 +120,14 @@ button {
 </style>
 </head>
 <body>
-<h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
+<h3>Correlation Between League of Legends (LoL) Player Rank and Length of Gaming</h3>
 
-<p>Authors: </p>
+<p>Authors: Feizhou Peng, Nan Wang, Vio Voykinska</p>
 <p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends (LoL) gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' demographic data and rank in different game types within LoL to identify trends.</p>
 
 <div class="outside">
 	<p align=left>
-	<div class="graphtitle">Gamers by Gaming Habits and Rank</div><br>
+	<div class="graphtitle">Gamers by Gaming Time and Rank</div><br>
     </p>
     <p align=left>
 	<div id="canvas"></div>
@@ -142,7 +144,7 @@ button {
 			<div id="colorScale"></div>
         <p>
 	</div>
-    <div class="inner"><p class="title">When we looked at the number of years that gamers played League, we saw that gamers playing Solo and 5 VS. 5 are able get ranked higher faster than those who played 3 VS. 3. Among the three game types, those that played Solo achieved a higher rank in a shorter period of time. We saw similar results when we examined the number of hours a week that gamers played on average. 
+    <div class="inner"><p class="title">When we looked at the number of years that gamers played League, we saw that gamers playing Solo Queue and 5 VS. 5 are able get ranked higher faster than those who played 3 VS. 3. Among the three game types, those that played Solo achieved a higher rank in a shorter period of time. We saw similar results when we examined the number of hours a week that gamers played on average. 
 	
 </div>
 
@@ -161,7 +163,7 @@ button {
 		<button id="barrank2">Solo</button>
 	</div></div>
     
-     <div class="inner"><p class="title">When we looked at the number of gamers in each age range by rank, we saw that a large portion of gamers play 3 VS. 3 and 5 VS. 5 unranked. Although the population of gamers was fairly young, no Solo gamer over 21 years of age made it to Challenger rank. 
+     <div class="inner"><p class="title">When we looked at the number of gamers in each age range by rank, we saw that a large portion of gamers don't play ranked in 3 VS. 3 and 5 VS. 5. Although the population of gamers was fairly young, no Solo Queue gamer over 21 years of age made it to Challenger rank. 
      </P>
 </div>
 <p>
@@ -401,13 +403,7 @@ d3.csv("formatData.csv", function (error, data) {
    			})
   			.entries(data);
 	
-		var addedtext = function(d) {
-				if (pieType == "age") {return " Year Olds";}
-				else if(pieType == "gender") {return "";}
-				else if(pieType == "country") {return "";}
-				else { return " Year Olds";}
-		}
-	
+
 // add pie data to the pie slices for the tooltip
 		var g = svg.selectAll(".arc")
       		.data(pie(totals))
@@ -417,10 +413,9 @@ d3.csv("formatData.csv", function (error, data) {
         		var mouseVal = d3.mouse(this);
 				if (pieType == "age") { 
 					var newage = printAge(parseInt(totals[i].key));
-					return tooltipdiv.html(newage)}
-				else { return tooltipdiv.html(totals[i].key) }
-					
-				//console.log(d3.mouse(this));
+					return document.getElementById('pietooltip').innerHTML = newage;}
+				else { return document.getElementById('pietooltip').innerHTML = totals[i].key; }
+					//console.log(d3.mouse(this));
 				});
 
 // color each pie slice	
@@ -428,13 +423,6 @@ d3.csv("formatData.csv", function (error, data) {
     		.attr("d", arc)
     	 	.style("fill", function(d, i) { return piecolor(totals[i].values); });
 
-// assign name to pie title based on selected button
-	//	pietitle.html(function(d) { 
-	 // 			if (pieType == "age") {return "Gamers by Age (Select Slice to Explore)";}
-//				else if(pieType == "gender") {return "Gamers by Gender (Select Slice to Explore)";}
-		//		else if(pieType == "country") {return "Gamers by Country (Select Slice to Explore)";}
-	//			else {return "Gamers by Age (Select Slice to Explore)";}
-	  	//	})
 	};
 
 // generate the default pie
@@ -444,8 +432,7 @@ d3.csv("formatData.csv", function (error, data) {
 // code for pie buttons
 	d3.select("#age").on("click", function (selection) {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("age");
 		d3.select(this).style("background","grey");
 		d3.select("#gender").style("background","white");
@@ -453,8 +440,7 @@ d3.csv("formatData.csv", function (error, data) {
 		});
 	d3.select("#gender").on("click", function () {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("gender");
 		d3.select(this).style("background","grey");
 		d3.select("#age").style("background","white");
@@ -462,8 +448,7 @@ d3.csv("formatData.csv", function (error, data) {
 		});
 	d3.select("#country").on("click", function () {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("country");
 		d3.select(this).style("background","grey");
 		d3.select("#gender").style("background","white");
@@ -784,16 +769,16 @@ function printAge(x){
 					return "<= 18 years old"
 					break; 
 				case 2: 
-					return "18~21 years old"
+					return "18 - 21 years old"
 					break; 
 				case 3: 
-					return "21~24 years old"; 
+					return "21 - 24 years old"; 
 					break;
 				case 4: 
-					return "24~27 years old"; 
+					return "24 - 27 years old"; 
 					break; 
 				case 5: 
-					return "over 27 years old";
+					return "Over 27 years old";
 					break;
 				default:
 					return "none";

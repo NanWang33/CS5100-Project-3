@@ -108,7 +108,10 @@ button {
 <p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
 
 <div class="outside">
+	<p align=left>
 	<div class="graphtitle">Gamers by Gaming Habits and Rank</div><br>
+    </p>
+    <p align=left>
 	<div id="canvas"></div>
     <div class="buttonsdiv">
     	<p>Choose time span or frequency:</p>
@@ -126,7 +129,9 @@ button {
 <p>
 
 <div class="outside">
-<div class="graphtitle">Gamers by Age and Rank</div>
+<p align=left>
+<div class="graphtitle">Gamers by Age and Rank</div></p>
+<p align=left>
 <div id = "barchart"></div>
 	<div class="buttonsdiv">
 		<p>Choose game type:</p>
@@ -137,7 +142,9 @@ button {
 </div>
 <p>
 <div class="outside">
-	<div id="pietitle">Gamers by Age, Gender or Country (Select Slice to Explore)</div>
+<p align=left>
+	<div id="pietitle">Gamers by Age, Gender or Country (Select Slice to Explore)</div></p>
+    <p align=left>
 	<div id="pie"></div>
 	<div class="buttonsdiv">
 	<p>Choose gamer grouping:</p>
@@ -150,14 +157,14 @@ button {
 
 <script>
 //change these numbers to make it scalable
-var svgheight = 450
-var svgwidth = 800
-var height = 450
-var width = 450
-var padding = 80
-var labelFontSize = 15
-var stokeWidth = 5
-var dasharray = "10,10"
+var svgheight = 450;
+var svgwidth = 800;
+var height = 450;
+var width = 450;
+var padding = 80;
+var labelFontSize = 15;
+var stokeWidth = 5;
+var dasharray = "10,10";
 
 var users;
 var xScale;

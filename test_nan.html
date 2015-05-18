@@ -22,7 +22,7 @@ html, body {
 	position: relative;
 	border: solid black 1px; 
 	width: 40%; 
-	height: 60%; 
+	height: 100%; 
 	}
 	
 #barbutton {
@@ -82,8 +82,8 @@ p.title {
 
 #piegroup{
 	position: relative;
-	width: 400px;
-	height: 430px;
+	width: 40%;
+	height: 100%;
 	border: solid black 1px;
 }
 
@@ -95,7 +95,7 @@ p.title {
  	font: 20px sans-serif;	
  	font-weight:bold;
  	color: #0D2C3D;
-	width: 50px;
+	width: 10%;
  }
 
 #pietitle {
@@ -117,10 +117,10 @@ p.title {
  }
 
 #piebuttonlist {
- 	position: absolute;
-	width: 100%;
-	top: 345px;
-	left:5px;
+  	position: absolute;
+    left: 1%;
+    top: 78%;
+	height: 100px;
 }
 
 </style>
@@ -128,7 +128,7 @@ p.title {
 <body>
 <h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
 <p>Authors: </p>
-<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examaine correlation.</P>
+<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
 
 <div id="correlation">
 <div class="graphtitle">Gamers by Gaming Habits and Rank</div>
@@ -148,7 +148,7 @@ p.title {
 </div>
 </div>
 <p>
-<div id = "barchartenvelope">
+<div id = "barchartenvelope" width="100">
 <div id = "barchart"></div>
 <div class="graphtitle">Gamers by Age and Rank</div>
 	<div id="barbutton">
@@ -195,9 +195,9 @@ var labels;
 var legend;
 
 // PIE CONTROLS START
-var pwidth = 400,
-    pheight = 400,
-    radius = Math.min(pwidth, pheight) / 2.5;
+var pwidth = screen.width*0.3,
+    pheight = screen.height*0.4,
+    radius = Math.min(pwidth, pheight) / 2;
 
 var piecolor = d3.scale.ordinal()
     .range(["#B5d3e2", "#6793AA", "#32627b", "#6793AA"]);
@@ -207,7 +207,7 @@ var pie = d3.layout.pie()
     .value(function(d) { return d.values;});
 	
 var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
+    .outerRadius(radius - 20)
     .innerRadius(0);
 
 // add a title div to the pie
@@ -345,8 +345,8 @@ d3.csv("formatData.csv", function (error, data) {
 			.on("click",function(d, i){
         		var mouseVal = d3.mouse(this);
 					tooltipdiv.html(totals[i].key + addedtext(pieType))
-					.style("left", (d3.mouse(this)[0]) + radius + (radius/4) + "px")
-       				.style("top", (d3.mouse(this)[1]) + radius + (radius/4) + "px");
+					.style("left", (d3.mouse(this)[0]) + radius + "px")
+       				.style("top", (d3.mouse(this)[1]) + radius + "px");
 				//console.log(d3.mouse(this));
 				});
 
@@ -357,10 +357,10 @@ d3.csv("formatData.csv", function (error, data) {
 
 // assign name to pie title based on selected button
 		pietitle.html(function(d) { 
-	  			if (pieType == "age") {return "Gamers by Age (Click to Slices Explore)";}
-				else if(pieType == "gender") {return "Gamers by Gender (Click Slices to Explore)";}
-				else if(pieType == "country") {return "Gamers by Country (Click Slices to Explore)";}
-				else { return "Gamers by Age (Click Slices to Explore)";}
+	  			if (pieType == "age") {return "Gamers by Age (Select Slice to Explore)";}
+				else if(pieType == "gender") {return "Gamers by Gender (Select Slice to Explore)";}
+				else if(pieType == "country") {return "Gamers by Country (Select Slice to Explore)";}
+				else { return "Gamers by Age (Select Slice to Explore)";}
 	  		})
 	};
 
@@ -462,6 +462,7 @@ var setYLabel = function(tt){
 		.attr("text-anchor", "middle")
 		.text(tt);
 }
+
 
 var drawSquares = function(xx, yy){
 	var squares = svg.selectAll("rect").data(users)

@@ -9,6 +9,7 @@ html, body {
 	font-family: "Open Sans";
 	}
 	
+<<<<<<< HEAD
 svg { border: solid black 0px; }
 .axis path { fill: none; stroke: #777; }
 .axis line { stroke: #777; }	
@@ -45,6 +46,13 @@ p.title {
 }
 	
 /* structural divs */
+=======
+
+	
+#barchartenvelope {
+	position: relative;
+	}
+>>>>>>> FETCH_HEAD
 	
 .outside {
 	float:left;	
@@ -125,7 +133,12 @@ button {
 </div>
 
 <p>
+<<<<<<< HEAD
 <div class="outside">
+=======
+<div id = "barchartenvelope" >
+<div id = "barchart"></div>
+>>>>>>> FETCH_HEAD
 <div class="graphtitle">Gamers by Age and Rank</div>
 <div id = "barchart"></div>
 	<div class="buttonsdiv">
@@ -296,7 +309,7 @@ d3.csv("formatData.csv", function (error, data) {
 // calculate totals for pie slices
 		var totals = d3.nest()
   			.key(function (d) { 
-  				if (pieType == "age") {return d.age;}
+  				if (pieType == "age") {return ageblock(parseInt(d.age));}
 				else if(pieType == "gender") {return d.gender;}
 				else if(pieType == "country") {return d.country;}
 				else { return d.age;}
@@ -746,18 +759,18 @@ var creatLine = function(xx, yy){
 			var yValue = new Array;
 			var lastrank=-1;
 			var svg = d3.select("#barchart").append("svg")
-				  		.attr("width", "100%")
-				  		.attr("height", "100%");
-				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","95%").attr("y2","90%").style("stroke-width",2).style("stroke","black");
-				svg.append("line").attr("x1","10%").attr("y1","90%").attr("x2","10%").attr("y2","10%").style("stroke-width",2).style("stroke","black");
-				svg.append("text").attr("x","95%").attr("y","95%").text("rank");
+				  		.attr("width", svgwidth)
+				  		.attr("height", svgheight);
+				svg.append("line").attr("x1",padding).attr("y1",svgheight-padding).attr("x2",svgwidth-padding+20).attr("y2",svgheight-padding).style("stroke-width",2).style("stroke","black");
+				svg.append("line").attr("x1",padding).attr("y1",svgheight-padding).attr("x2",padding).attr("y2",padding).style("stroke-width",2).style("stroke","black");
+				svg.append("text").attr("x",svgwidth-padding+20).attr("y",svgheight-padding).text("rank");
 				//svg.append("rect").attr("x","15%").attr("y","85%").attr("height","5%").attr("width","5%").attr("fill","red");
 				var rect = svg.selectAll(".rectangle").data(data).enter().append('g');
 				rect.attr("class","rectangle").append("rect")
 					.attr("x",function(d,i){
 						if(parseInt(d[rank])!=lastrank) {y = 0; x = 0;}
  						var xx = 10+parseInt(d[rank])*10.5+x*2;
- 						var yy = 88-1.5*y;
+ 						var yy = (1-padding/svgheight)*100-1.5*(y+1);
  						lastageblock = ageblock(parseInt(d.age));
  						yValue[i] = yy;
  						if(x==4) {x=0;y++;}
@@ -779,6 +792,12 @@ var creatLine = function(xx, yy){
  						console.log(d.rank1);
  						console.log(d.gender);
  					});
+ 					for(var i = 1; i <6; i++ ){
+ 						svg.append("rect").attr("x",600).attr("y",padding+20*i).attr("width",20).attr("height",10).style("fill",color(i));
+ 						svg.append("text").attr("x",630).attr("y",padding+5+20*i).attr("alignment-baseline", "middle").text(printAge(i));
+ 					}
+ 					for(var i=1 ; i<9; i++)
+ 						svg.append("text").attr("x",(10+(i-1)*10.5)+"%").attr("y",(1-padding/svgheight)*100+3+"%").text(yticks[i]);
 		}
 
 // Pie Sources:
@@ -786,7 +805,27 @@ var creatLine = function(xx, yy){
 // pie: http://bl.ocks.org/mbostock/3887235
 // onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
 
-
+function printAge(x){
+	switch(x){
+				case 1: 
+					return "<= 18 years old"
+					break; 
+				case 2: 
+					return "18~21 years old"
+					break; 
+				case 3: 
+					return "21~24 years old"; 
+					break;
+				case 4: 
+					return "24~27 years old"; 
+					break; 
+				case 5: 
+					return "over 27 years old";
+					break;
+				default:
+					return "none";
+				}
+}
 
 
 </script>

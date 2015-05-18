@@ -4,9 +4,9 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
 html, body { 
-	width: 100% 
-	margin: 2% 
-	font-family: "Open Sans";
+	width: 100%;
+	margin: 1%;
+	font: 1em sans-serif;
 	}
 	
 svg { border: solid black 0px; }
@@ -42,14 +42,20 @@ p.title {
 /* structural divs */
 .outside {
 	float:left;	
-	border: solid black 1px;
+	border: solid black 0px;
+	width: 100%;
+	align: left;
+}
+
+.inner {
+	float:left;	
 	width: 100%;
 	align: left;
 }
 .graphtitle {
 	float: left;	
  	text-align: left;	
-  	font: 18px sans-serif;	
+  	font: 1.2em sans-serif;	
   	font-weight:bold;
   	color: black;
  }
@@ -59,8 +65,7 @@ button {
   background: white;
   padding: 8px 16px;
   color: black;
-  font-size: 16px;
-  font-family: "Lato", sans-serif;
+  font: 1.1em sans-serif;	
   text-decoration: none;
   vertical-align: middle;
   margin:4px;
@@ -74,7 +79,7 @@ button {
 }
 #pietooltip{
 	position: relative;		
- 	font: 20px sans-serif;	
+ 	font: 1.2em sans-serif;	
  	font-weight:bold;
  	color: #0D2C3D;
 	width: 20px;
@@ -83,7 +88,7 @@ button {
 #pietitle {
 	float: left;	
  	text-align: left;	
-  	font: 18px sans-serif;	
+  	font: 1.2em sans-serif;	
   	font-weight:bold;
   	color: black;
  }
@@ -93,7 +98,7 @@ button {
 <h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
 
 <p>Authors: </p>
-<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
+<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to identify trends.</p>
 
 <div class="outside">
 	<p align=left>
@@ -111,28 +116,36 @@ button {
 			<button id="rank3">5 VS 5</button>
 			<button id="rank2">Solo</button>	
 	</div>
-
+    <div class="inner"><p class="title">When we looked at number of years that gamers have played League, was saw that gamers playing Solo and 5 VS. 5 are able get ranked higher much faster than those who played 3 VS. 3. However, those that played Solo have a higher rank on average.
+    When we looked at the number of hours a week that gamer play on average, we saw similar results, although the gamers' Solo rank was even higher, on average. 
+     </P></div>
+	
 </div>
 
 <p>
 
 <div class="outside">
 <p align=left>
+
 <div class="graphtitle">Gamers by Age and Rank</div></p>
-<p align=left>
+<p align=left><div class="inner">
 <div id = "barchart"></div>
 	<div class="buttonsdiv">
 		<p>Choose game type:</p>
 		<button id="barrank1">3 VS 3</button>
 		<button id="barrank3">5 VS 5</button>
 		<button id="barrank2">Solo</button>
-	</div>
+	</div></div>
+    
+     <div class="inner"><p class="title">We saw that many gamers play 3 VS. 3 and 5 VS. 5 unranked. Of the gamers that play Solo, many were 
+     </P>
 </div>
 <p>
 <div class="outside">
 <p align=left>
 	<div id="pietitle">Gamers by Age, Gender or Country (Select Slice to Explore)</div></p>
-    <p align=left>
+   <p align=left>
+   <div class="inner">
 	<div id="pie"></div>
 	<div class="buttonsdiv">
 	<p>Choose gamer grouping:</p>
@@ -141,6 +154,7 @@ button {
 	<button id="country">Country</button>
 	</div>
 	<div id="pietooltip"></div>
+    </div>
 </div>
 
 <script>

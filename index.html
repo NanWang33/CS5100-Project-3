@@ -369,7 +369,6 @@ var chooseStyle = function(xx, yy){
 	setXLabel(xx)
 	setYLabel("rank")	
 	creatLine(xx, yy)
-	addLegend(xx);
 }
 var xtickyear = ["0","<0.5","<1","<2","<3","<4","<5"];
 var xtickhours = ["0","","<5","","<10","","<15","","<20"];
@@ -520,6 +519,7 @@ var creatLine = function(xx, yy){
 					.attr("y2", yScale(model.slope * maxHour+ model.intercept))
 	}
 }
+<<<<<<< HEAD
 	var addLegend = function(xx) {
 		// Add legend	
 		var newwidth = width;
@@ -669,6 +669,9 @@ var creatLine = function(xx, yy){
 				.text("4-5: More than 20 hours");
 		}
 	}
+=======
+
+>>>>>>> origin/master
 		function ageblock (x){
 			if(x<=18) return 1;
 			else if(x<=21) return 2;

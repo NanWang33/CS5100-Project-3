@@ -3,36 +3,16 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
-html, body { 
-	height: 100%; 
-	width: 100%; 
-	margin: 1%; 
-	font-family: "Open Sans";
-	}
-	
-#barchart {
-	position: absolute;
-	width: 100%; 
-	height: 85%; 
-	opacity:1; 
-	background-color: #fff;
-	}
-	
-#barchartenvelope {
-	position: relative;
-	border: solid black 1px; 
-	width: 40%; 
-	height: 100%; 
-	}
-	
+html, body { height: 100%; width: 100%; margin: 0; }
+#barchart {width: 40%; height: 60%; opacity:1; background-color: #fff;}
 #barbutton {
- 	position: absolute;
-    left: 1%;
-    top: 78%;
-	height: 100px;
+ 	position: relative;
+    left: 30%;
+    top: 30%;
 }
+body { font-family: "Open Sans"; } 
 
-svg { border: solid black 0px; }
+svg { border: solid black 1px; }
 .axis path { fill: none; stroke: #777; }
 .axis line { stroke: #777; }
 
@@ -66,79 +46,18 @@ button {
 p {
 	line-height: 30%;
 }
-p.title {
-	line-height: 100%;
-}
-
-#correlation{
-	position: relative;
-	border: solid black 1px;
-}
-
-/* pie styles */
-.arc path {
-	stroke: #fff;
-}
-
-#piegroup{
-	position: relative;
-	width: 40%;
-	height: 100%;
-	border: solid black 1px;
-}
-
-#pie{
-	position: absolute;	
-}
-#pietooltip{
-	position: relative;		
- 	font: 20px sans-serif;	
- 	font-weight:bold;
- 	color: #0D2C3D;
-	width: 10%;
- }
-
-#pietitle {
-	position: absolute;	
- 	text-align: left;	
-  	font: 18px sans-serif;	
-  	font-weight:bold;
-  	color: black;
-	width: 100%;
- }
-
-.graphtitle {
-	position: absolute;	
- 	text-align: left;	
-  	font: 18px sans-serif;	
-  	font-weight:bold;
-  	color: black;
-	width: 100%;
- }
-
-#piebuttonlist {
-  	position: absolute;
-    left: 1%;
-    top: 78%;
-	height: 100px;
-}
 
 </style>
 </head>
 <body>
-<h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
-<p>Authors: </p>
-<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
 
-<div id="correlation">
-<div class="graphtitle">Gamers by Gaming Habits and Rank</div>
 <div id="canvas"></div>
 <div id="buttonlist1">
 <p>Choose time span or frequency:</p>
-<button id="years">How many years playing</button>
+<button id="years">How many years have been played</button>
 </div>
 <div id="buttonlist2">
-<button id="hours">How many hours a week playing</button>
+<button id="hours">How many hours a week</button>
 </div>
 <div id="buttonlist3">
 <p>Choose game type:</p>
@@ -146,11 +65,7 @@ p.title {
 <button id="rank3">5 VS 5</button>
 <button id="rank2">Solo</button>
 </div>
-</div>
-<p>
-<div id = "barchartenvelope" width="100">
-<div id = "barchart"></div>
-<div class="graphtitle">Gamers by Age and Rank</div>
+<div id = "barchart">
 	<div id="barbutton">
 		<p>Choose game type:</p>
 		<button id="barrank1">3 VS 3</button>
@@ -158,19 +73,6 @@ p.title {
 		<button id="barrank2">Solo</button>
 	</div>
 </div>
-<p>
-<div id="piegroup">
-	<div id="pie"></div>
-	<div id="pietitle" ></div>
-	<div id="piebuttonlist">
-	<p>Choose gamer grouping:</p>
-	<button id="age">Age</button>
-	<button id="gender">Gender</button>
-	<button id="country">Country</button>
-	</div>
-	<div id="pietooltip"></div>
-</div>
-
 <script>
 //change these numbers to make it scalable
 var svgheight = 450
@@ -194,6 +96,7 @@ var svg;
 var labels;
 var legend;
 
+<<<<<<< HEAD
 // PIE CONTROLS START
 var pwidth = screen.width*0.8,
     pheight = screen.height*0.6,
@@ -222,6 +125,8 @@ var tooltipdiv = d3.select("#piegroup")
 // END OF PIE CONTROLS
 
 // START OF CSV PULL FUNCTION
+=======
+>>>>>>> parent of 6d158b1... Merge remote-tracking branch 'origin/master'
 d3.csv("formatData.csv", function (error, data) {
 	users = data;
 	
@@ -304,102 +209,7 @@ d3.csv("formatData.csv", function (error, data) {
 		//console.log(data);
 			ageRank(data,"rank3");
 		});
-
-// START PIE CHART CODE
-	var generatePie = function(pieType) {
-
-// add pie SVG element
-		var svg = d3.select("#pie").append("svg")
-    		.attr("width", pwidth)
-    		.attr("height", pheight)
-			.style("border", "none")
- 			.append("g")
-    		.attr("transform", "translate(" + pwidth / 2 + "," + pheight / 2 + ")");
-
-// calculate totals for pie slices
-		var totals = d3.nest()
-  			.key(function (d) { 
-  				if (pieType == "age") {return d.age;}
-				else if(pieType == "gender") {return d.gender;}
-				else if(pieType == "country") {return d.country;}
-				else { return d.age;}
- 			 })
-  			.sortKeys(d3.ascending)
-  			.rollup(function(d){
-  				return d.length;
-   			})
-  			.entries(data);
-	
-		var addedtext = function(d) {
-				if (pieType == "age") {return " Year Olds";}
-				else if(pieType == "gender") {return "";}
-				else if(pieType == "country") {return "";}
-				else { return " Year Olds";}
-		}
-	
-// add pie data to the pie slices for the tooltip
-		var g = svg.selectAll(".arc")
-      		.data(pie(totals))
-    		.enter().append("g")
-     		.attr("class", "arc")
-			.on("click",function(d, i){
-        		var mouseVal = d3.mouse(this);
-					tooltipdiv.html(totals[i].key + addedtext(pieType))
-					.style("left", (d3.mouse(this)[0]) + radius + "px")
-       				.style("top", (d3.mouse(this)[1]) + radius + "px");
-				//console.log(d3.mouse(this));
-				});
-
-// color each pie slice	
- 		g.append("path")
-    		.attr("d", arc)
-    	 	.style("fill", function(d, i) { return piecolor(totals[i].values); });
-
-// assign name to pie title based on selected button
-		pietitle.html(function(d) { 
-	  			if (pieType == "age") {return "Gamers by Age (Select Slice to Explore)";}
-				else if(pieType == "gender") {return "Gamers by Gender (Select Slice to Explore)";}
-				else if(pieType == "country") {return "Gamers by Country (Select Slice to Explore)";}
-				else { return "Gamers by Age (Select Slice to Explore)";}
-	  		})
-	};
-
-// generate the default pie
-	generatePie("age");
-	d3.select("#age").style("background","grey");
-	
-// code for pie buttons
-	d3.select("#age").on("click", function (selection) {
-		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
-		generatePie("age");
-		d3.select(this).style("background","grey");
-		d3.select("#gender").style("background","white");
-		d3.select("#country").style("background","white");
-		});
-	d3.select("#gender").on("click", function () {
-		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
-		generatePie("gender");
-		d3.select(this).style("background","grey");
-		d3.select("#age").style("background","white");
-		d3.select("#country").style("background","white");
-		});
-	d3.select("#country").on("click", function () {
-		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
-		generatePie("country");
-		d3.select(this).style("background","grey");
-		d3.select("#gender").style("background","white");
-		d3.select("#age").style("background","white");
-		});
-// END OF PIE CODE
-
 });
-// END OF CSV PULL FUNCTION
 
 var chooseStyle = function(xx, yy){
 	d3.select("#canvas").select("svg").remove();
@@ -462,7 +272,6 @@ var setYLabel = function(tt){
 		.attr("text-anchor", "middle")
 		.text(tt);
 }
-
 
 var drawSquares = function(xx, yy){
 	var squares = svg.selectAll("rect").data(users)
@@ -803,15 +612,6 @@ var creatLine = function(xx, yy){
  						console.log(d.gender);
  					});
 		}
-
-// Pie Sources:
-// nesting: http://bl.ocks.org/phoebebright/raw/3176159/
-// pie: http://bl.ocks.org/mbostock/3887235
-// onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
-
-
-
-
 </script>
 
 </body>

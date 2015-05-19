@@ -338,6 +338,12 @@ d3.csv("formatData.csv", function (error, data) {
 			ageRank(data,"rank3");
 		});
 // START PIE CHART CODE
+
+// Pie Inspiration and Sources:
+// nesting: http://bl.ocks.org/phoebebright/raw/3176159/
+// pie: http://bl.ocks.org/mbostock/3887235
+// onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
+
 	var generatePie = function(pieType) {
 // add pie SVG element
 		var svg = d3.select("#pie").append("svg")
@@ -729,10 +735,7 @@ var creatLine = function(xx, yy){
  					for(var i=1 ; i<9; i++)
  						svg.append("text").attr("x",(10+(i-1)*10.5)+"%").attr("y",(1-padding/svgheight)*100+3+"%").style("font-size",10).text(yticks[i]);
 		}
-// Pie Sources:
-// nesting: http://bl.ocks.org/phoebebright/raw/3176159/
-// pie: http://bl.ocks.org/mbostock/3887235
-// onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
+
 function printAge(x){
 	switch(x){
 				case 1: 

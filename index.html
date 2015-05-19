@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Correlation Between League of Legends (LoL) Player Rank and Length of Gaming</title>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
@@ -12,6 +13,8 @@ html, body {
 svg { border: solid black 0px; }
 .axis path { fill: none; stroke: #777; }
 .axis line { stroke: #777; }	
+
+
 p {
 	line-height: 30%;
 }
@@ -20,6 +23,7 @@ p.title {
 }
 	
 /* svgs divs */	
+
 #canvas {
 	float: left;	
 	width: 550px;
@@ -32,6 +36,7 @@ p.title {
 	opacity:1; 
 	align: left;
 	}
+
 #pie{
 	float: left;	
 	width: 550px;
@@ -39,6 +44,7 @@ p.title {
 }
 	
 /* structural divs */
+
 .outside {
 	float:left;	
 	border: solid black 0px;
@@ -51,6 +57,12 @@ p.title {
 	width: 100%;
 	align: left;
 }
+
+.innertext {
+	float:left;	
+	align: left;
+}
+
 .graphtitle {
 	float: left;	
  	text-align: left;	
@@ -58,32 +70,37 @@ p.title {
   	font-weight:bold;
   	color: black;
  }
+
 /* buttons */	
 button {
   border: 2px solid grey;
   background: white;
   padding: 8px 16px;
   color: black;
-  font: 1.1em sans-serif;	
+  font: 16px sans-serif;	
   text-decoration: none;
   vertical-align: middle;
   margin:4px;
 }
+
 .buttonsdiv { 
 	float: left;
 }
+
 /* pie styles */
 .arc path {
 	stroke: #fff;
 }
-#pietooltip{
-	position: relative;		
+
+#pietooltip{	
+	float: left;
  	font: 1.2em sans-serif;	
  	font-weight:bold;
  	color: #0D2C3D;
-	width: 20px;
+	width:200px;
+	margin-top:35px;
  }
-/*this needs to change to the graphtitle */
+
 #pietitle {
 	float: left;	
  	text-align: left;	
@@ -91,16 +108,32 @@ button {
   	font-weight:bold;
   	color: black;
  }
+
+#piegroup {
+	float:left;	
+	border: solid black 0px;
+	width: 100%;
+	align: left;
+ }
+
+
 </style>
 </head>
 <body>
+<<<<<<< HEAD
 <h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
 <p>Authors: </p>
 <p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to identify trends.</p>
+=======
+<h3>Correlation Between League of Legends (LoL) Player Rank and Length of Gaming</h3>
+
+<p>Authors: Feizhou Peng, Nan Wang, Vio Voykinska</p>
+<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends (LoL) gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' demographic data and rank in different game types within LoL to identify trends.</p>
+>>>>>>> origin/master
 
 <div class="outside">
 	<p align=left>
-	<div class="graphtitle">Gamers by Gaming Habits and Rank</div><br>
+	<div class="graphtitle">Gamers by Gaming Time and Rank</div><br>
     </p>
     <p align=left>
 	<div id="canvas"></div>
@@ -112,11 +145,12 @@ button {
 		<p>Choose game type:</p>
 			<button id="rank1">3 VS 3</button>
 			<button id="rank3">5 VS 5</button>
-			<button id="rank2">Solo</button>	
+			<button id="rank2">Solo</button>
+		<p >Color Scale: </p>
+			<div id="colorScale"></div>
+        <p>
 	</div>
-    <div class="inner"><p class="title">When we looked at number of years that gamers have played League, was saw that gamers playing Solo and 5 VS. 5 are able get ranked higher much faster than those who played 3 VS. 3. However, those that played Solo have a higher rank on average.
-    When we looked at the number of hours a week that gamer play on average, we saw similar results, although the gamers' Solo rank was even higher, on average. 
-     </P></div>
+    <div class="inner"><p class="title">When we looked at the number of years that gamers played League, we saw that gamers playing Solo Queue and 5 VS. 5 are able get ranked higher faster than those who played 3 VS. 3. Among the three game types, those that played Solo achieved a higher rank in a shorter period of time. We saw similar results when we examined the number of hours a week that gamers played on average. 
 	
 </div>
 
@@ -135,13 +169,13 @@ button {
 		<button id="barrank2">Solo</button>
 	</div></div>
     
-     <div class="inner"><p class="title">We saw that many gamers play 3 VS. 3 and 5 VS. 5 unranked. Of the gamers that play Solo, many were 
+     <div class="inner"><p class="title">When we looked at the number of gamers in each age range by rank, we saw that a large portion of gamers don't play ranked in 3 VS. 3 and 5 VS. 5. Although the population of gamers was fairly young, no Solo Queue gamer over 21 years of age made it to Challenger rank. 
      </P>
 </div>
 <p>
-<div class="outside">
+<div id="piegroup">
 <p align=left>
-	<div id="pietitle">Gamers by Age, Gender or Country (Select Slice to Explore)</div></p>
+	<div class="graphtitle">Gamers by Age, Gender or Country (Click to Explore)</div></p>
    <p align=left>
    <div class="inner">
 	<div id="pie"></div>
@@ -152,6 +186,9 @@ button {
 	<button id="country">Country</button>
 	</div>
 	<div id="pietooltip"></div>
+    <div class="inner"><p class="title">Demographic data on the LoL population shows that a large portion of gamers are young, and very few are over the age of 27. It also shows that most of them are males, but that they come from many different countries. 
+     </P>
+</div>
     </div>
 </div>
 
@@ -165,21 +202,34 @@ var padding = 80;
 var labelFontSize = 15;
 var stokeWidth = 5;
 var dasharray = "10,10";
+
 var users;
 var xScale;
 var yScale;
+
 var maxYear = 7 //year: 0-6
 var maxHour = 5 //hour: 0-4
 var maxRank = 8 //rank: 0-7
+
+var max_YearRank1;
+var max_YearRank2;
+var max_YearRank3;
+var max_HourRank1;
+var max_HourRank2;
+var max_HourRank3;
+
 var svg;
 var labels;
 var legend;
+
 // PIE CONTROLS START
 var pwidth = 550,
     pheight = 450,
     radius = Math.min(pwidth, pheight) / 2;
+
 var piecolor = d3.scale.ordinal()
     .range(["#B5d3e2", "#6793AA", "#32627b", "#6793AA"]);
+
 var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.values;});
@@ -187,53 +237,107 @@ var pie = d3.layout.pie()
 var arc = d3.svg.arc()
     .outerRadius(radius - 20)
     .innerRadius(0);
+
 // add a title div to the pie
 var pietitle = d3.select("#piegroup")
 		.append("div") 
 		.attr("id", "pietitle");
+
 // add tooltip div to the pie
 var tooltipdiv = d3.select("#piegroup")
 		.append("div") 
 		.attr("id", "pietooltip");
 // END OF PIE CONTROLS
+
 // START OF CSV PULL FUNCTION
 d3.csv("formatData.csv", function (error, data) {
 	users = data;
+	//calculate max number of overlap
+	var count1 = []
+	var count2 = []
+	var count3 = []
+	for (var i = 0; i<7; i++){
+		for (var j=0; j<8; j++){
+			count1[i*8+j] = 0; count2[i*8+j] = 0; count3[i*8+j] = 0;
+		}
+	}	
+	for (var index=0; index<479; index++){
+		var tmp1 = Number(users[index].years) * 8 + Number(users[index].rank1);
+		var tmp2 = Number(users[index].years) * 8 + Number(users[index].rank2);
+		var tmp3 = Number(users[index].years) * 8 + Number(users[index].rank3);
+		count1[tmp1] += 1; count2[tmp2] += 1; count3[tmp3] += 1;
+	}
+	var max1 = 0; var max2 = 0; var max3 = 0;
+	for (var i = 0; i<7; i++){
+		for (var j=0; j<8; j++){
+			if (count1[i*8+j] > max1) max1 = count1[i*8+j]
+			if (count2[i*8+j] > max2) max2 = count2[i*8+j]
+			if (count3[i*8+j] > max3) max3 = count3[i*8+j]
+		}
+	}
+	max_YearRank1 = max1;
+	max_YearRank2 = max2;
+	max_YearRank3 = max3;
+	var countH1 = []
+	var countH2 = []
+	var countH3 = []
+	for (var i = 0; i<5; i++){
+		for (var j=0; j<8; j++){
+			countH1[i*8+j] = 0; countH2[i*8+j] = 0; countH3[i*8+j] = 0;
+		}
+	}	
+	for (var index=0; index<479; index++){
+		var tmp1 = Number(users[index].hours) * 8 + Number(users[index].rank1);
+		var tmp2 = Number(users[index].hours) * 8 + Number(users[index].rank2);
+		var tmp3 = Number(users[index].hours) * 8 + Number(users[index].rank3);
+		countH1[tmp1] += 1; countH2[tmp2] += 1; countH3[tmp3] += 1;
+	}
+	var maxH1 = 0; var maxH2 = 0; var maxH3 = 0;
+	for (var i = 0; i<7; i++){
+		for (var j=0; j<8; j++){
+			if (countH1[i*8+j] > maxH1) maxH1 = countH1[i*8+j]
+			if (countH2[i*8+j] > maxH2) maxH2 = countH2[i*8+j]
+			if (countH3[i*8+j] > maxH3) maxH3 = countH3[i*8+j]
+		}
+	}
+	max_HourRank1 = maxH1;
+	max_HourRank2 = maxH2;
+	max_HourRank3 = maxH3;
 	
 	var defaultX = "years";
 	var defaultY = "rank1";
-	d3.select("#years").style("background","grey");
-	d3.select("#rank1").style("background","grey");
-	d3.select("#barrank2").style("background","grey");
+	d3.select("#years").style("background","#cccccc");
+	d3.select("#rank1").style("background","#cccccc");
+	d3.select("#barrank2").style("background","#cccccc");
 	chooseStyle(defaultX, defaultY);
 	d3.select("#years").on("click", function () {
-		d3.select(this).style("background","grey");
+		d3.select(this).style("background","#cccccc");
 		d3.select("#hours").style("background","white");
 		chooseStyle("years", defaultY);
 		defaultX = "years";
 	});
 	d3.select("#hours").on("click", function () {
-		d3.select(this).style("background","grey");
+		d3.select(this).style("background","#cccccc");
 		d3.select("#years").style("background","white");
 		chooseStyle("hours", defaultY);
 		defaultX = "hours";
 	});
 	d3.select("#rank1").on("click", function () {
-		d3.select(this).style("background","grey");
+		d3.select(this).style("background","#cccccc");
 		d3.select("#rank2").style("background","white");
 		d3.select("#rank3").style("background","white");
 		chooseStyle(defaultX, "rank1");
 		defaultY = "rank1";
 	});
 	d3.select("#rank2").on("click", function () {
-		d3.select(this).style("background","grey");
+		d3.select(this).style("background","#cccccc");
 		d3.select("#rank1").style("background","white");
 		d3.select("#rank3").style("background","white");
 		chooseStyle(defaultX, "rank2");
 		defaultY = "rank2";
 	});
 	d3.select("#rank3").on("click", function () {
-		d3.select(this).style("background","grey");
+		d3.select(this).style("background","#cccccc");
 		d3.select("#rank2").style("background","white");
 		d3.select("#rank1").style("background","white");
 		chooseStyle(defaultX, "rank3");
@@ -279,8 +383,10 @@ d3.csv("formatData.csv", function (error, data) {
 		//console.log(data);
 			ageRank(data,"rank3");
 		});
+
 // START PIE CHART CODE
 	var generatePie = function(pieType) {
+
 // add pie SVG element
 		var svg = d3.select("#pie").append("svg")
     		.attr("width", pwidth)
@@ -288,27 +394,22 @@ d3.csv("formatData.csv", function (error, data) {
 			.style("border", "none")
  			.append("g")
     		.attr("transform", "translate(" + pwidth / 2 + "," + pheight / 2 + ")");
+
 // calculate totals for pie slices
 		var totals = d3.nest()
   			.key(function (d) { 
   				if (pieType == "age") {return ageblock(parseInt(d.age));}
 				else if(pieType == "gender") {return d.gender;}
 				else if(pieType == "country") {return d.country;}
-				else { return d.age;}
- 			 })
+				else { return ageblock(parseInt(d.age));}
+				 })
   			.sortKeys(d3.ascending)
   			.rollup(function(d){
   				return d.length;
    			})
   			.entries(data);
 	
-		var addedtext = function(d) {
-				if (pieType == "age") {return " Year Olds";}
-				else if(pieType == "gender") {return "";}
-				else if(pieType == "country") {return "";}
-				else { return " Year Olds";}
-		}
-	
+
 // add pie data to the pie slices for the tooltip
 		var g = svg.selectAll(".arc")
       		.data(pie(totals))
@@ -316,23 +417,20 @@ d3.csv("formatData.csv", function (error, data) {
      		.attr("class", "arc")
 			.on("click",function(d, i){
         		var mouseVal = d3.mouse(this);
-					tooltipdiv.html(totals[i].key + addedtext(pieType))
-					.style("left", (d3.mouse(this)[0]) + radius + "px")
-       				.style("top", (d3.mouse(this)[1]) + radius + "px");
-				//console.log(d3.mouse(this));
+				if (pieType == "age") { 
+					var newage = printAge(parseInt(totals[i].key));
+					return document.getElementById('pietooltip').innerHTML = newage;}
+				else { return document.getElementById('pietooltip').innerHTML = totals[i].key; }
+					//console.log(d3.mouse(this));
 				});
+
 // color each pie slice	
  		g.append("path")
     		.attr("d", arc)
     	 	.style("fill", function(d, i) { return piecolor(totals[i].values); });
-// assign name to pie title based on selected button
-		pietitle.html(function(d) { 
-	  			if (pieType == "age") {return "Gamers by Age (Select Slice to Explore)";}
-				else if(pieType == "gender") {return "Gamers by Gender (Select Slice to Explore)";}
-				else if(pieType == "country") {return "Gamers by Country (Select Slice to Explore)";}
-				else { return "Gamers by Age (Select Slice to Explore)";}
-	  		})
+
 	};
+
 // generate the default pie
 	generatePie("age");
 	d3.select("#age").style("background","grey");
@@ -340,8 +438,7 @@ d3.csv("formatData.csv", function (error, data) {
 // code for pie buttons
 	d3.select("#age").on("click", function (selection) {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("age");
 		d3.select(this).style("background","grey");
 		d3.select("#gender").style("background","white");
@@ -349,8 +446,7 @@ d3.csv("formatData.csv", function (error, data) {
 		});
 	d3.select("#gender").on("click", function () {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("gender");
 		d3.select(this).style("background","grey");
 		d3.select("#age").style("background","white");
@@ -358,16 +454,17 @@ d3.csv("formatData.csv", function (error, data) {
 		});
 	d3.select("#country").on("click", function () {
 		d3.select("#pie").select("svg").remove();
-		pietitle.html("");
-		tooltipdiv.html("");
+		document.getElementById('pietooltip').innerHTML = "";
 		generatePie("country");
 		d3.select(this).style("background","grey");
 		d3.select("#gender").style("background","white");
 		d3.select("#age").style("background","white");
 		});
 // END OF PIE CODE
+
 });
 // END OF CSV PULL FUNCTION
+
 var chooseStyle = function(xx, yy){
 	d3.select("#canvas").select("svg").remove();
 	svg = d3.select("#canvas").append("svg")
@@ -381,6 +478,50 @@ var chooseStyle = function(xx, yy){
 	setXLabel(xx)
 	setYLabel("rank")	
 	creatLine(xx, yy)
+		var svg2
+	var opacity = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+	
+	if(yy == "rank1"){
+		d3.select("#colorScale").select("svg").remove();
+		svg2 = d3.select("#colorScale").append("svg")
+				.attr("height", 20)
+				.attr("width", 320);
+		svg2.append("text").attr("x", 0).attr("y", 15).text("1 person");
+		for (var i=0; i<8; i++){
+			svg2.append("rect").attr("x", 70+i*20).attr("y",0).
+							attr("height", 20).attr("width",20)
+							.style("fill","green").style("opacity", opacity[i]);
+		}
+
+		if(xx == "years") svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_YearRank1 + " people");
+		else svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_HourRank1 + " people");
+	}else if (yy == "rank2"){
+		d3.select("#colorScale").select("svg").remove();
+		svg2 = d3.select("#colorScale").append("svg")
+				.attr("height", 20)
+				.attr("width", 320);
+		svg2.append("text").attr("x", 0).attr("y", 15).text("1 person");
+		for (var i=0; i<8; i++){
+			svg2.append("rect").attr("x", 70+i*20).attr("y",0).
+							attr("height", 20).attr("width",20)
+							.style("fill","purple").style("opacity", opacity[i]);
+		}
+		if(xx == "years") svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_YearRank2 + " people");
+		else svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_HourRank2 + " people");
+	}else{
+		d3.select("#colorScale").select("svg").remove();
+		svg2 = d3.select("#colorScale").append("svg")
+				.attr("height", 20)
+				.attr("width", 320);
+		svg2.append("text").attr("x", 0).attr("y", 15).text("1 person");
+		for (var i=0; i<8; i++){
+			svg2.append("rect").attr("x", 70+i*20).attr("y",0).
+							attr("height", 20).attr("width",20)
+							.style("fill","blue").style("opacity", opacity[i]);
+		}
+		if(xx == "years") svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_YearRank3 + " people");
+		else svg2.append("text").attr("x", 240).attr("y", 15).text(" " + max_HourRank3 + " people");
+	}
 }
 var xtickyear = ["0","<0.5","<1","<2","<3","<4","<5"];
 var xtickhours = ["0","","<5","","<10","","<15","","<20"];
@@ -390,6 +531,7 @@ var setXYscale = function(xx, yy){
 	.range([padding, width-padding]);
 	yScale = d3.scale.linear().domain([0, yy])
 	.range([height-padding,padding]);
+
 	var xAxis = d3.svg.axis().scale(xScale)
 	.orient("bottom").tickFormat(function(d,i){
 		if(xx==maxYear)
@@ -409,6 +551,7 @@ var setXYscale = function(xx, yy){
 	.call(yAxis);
 	d3.selectAll(".tick").style("font-size","10");
 }
+
 var setXLabel = function(tt){
 	labels.append("text")						
 		.attr("x", width-padding/2)
@@ -417,6 +560,7 @@ var setXLabel = function(tt){
 		.attr("text-anchor", "middle")		
 		.text(tt);
 }
+
 var setYLabel = function(tt){
 	labels.append("text")
 		.attr("x", padding*3/4)
@@ -425,6 +569,8 @@ var setYLabel = function(tt){
 		.attr("text-anchor", "middle")
 		.text(tt);
 }
+
+
 var drawSquares = function(xx, yy){
 	var squares = svg.selectAll("rect").data(users)
 		.enter().append("rect");
@@ -442,11 +588,13 @@ var drawSquares = function(xx, yy){
 	}else{
 		squares.attr("y", function(d) { return yScale(d.rank3) })
 	}
+
 	squares.attr("rx", width/50).attr("ry", height/50)
 		.attr("height", function(d) { return (height-padding-padding)/(maxRank+1) })
 		.attr("transform", "translate(0,"+ -(height-padding-padding)/(maxRank+1) + ")" )
 		.attr("opacity", 0.1);
 		
+
 	switch (yy){
 		case "rank1":
 			squares.attr("fill", "green"); break;
@@ -456,6 +604,7 @@ var drawSquares = function(xx, yy){
 			squares.attr("fill", "blue"); break;
 	}
 }
+
 var creatLine = function(xx, yy){
 	var model = {};
 	var meanX;
@@ -516,6 +665,7 @@ var creatLine = function(xx, yy){
 			return (d.hours - meanX) * (d.hours - meanX);
 		});
 	}
+
 	model.intercept = meanY - model.slope * meanX;
 	var regressionLine = svg.append("line")
 							.attr("x1", xScale(0))
@@ -523,6 +673,7 @@ var creatLine = function(xx, yy){
 							.style("stroke", "black")
 							.style("stroke-width", stokeWidth)
 							.style("stroke-dasharray", dasharray);
+
 	if(xx == "years"){
 		regressionLine.attr("x2", xScale(maxYear))
 					.attr("y2", yScale(model.slope * maxYear + model.intercept))
@@ -612,31 +763,35 @@ var creatLine = function(xx, yy){
  					for(var i=1 ; i<9; i++)
  						svg.append("text").attr("x",(10+(i-1)*10.5)+"%").attr("y",(1-padding/svgheight)*100+3+"%").text(yticks[i]);
 		}
+
 // Pie Sources:
 // nesting: http://bl.ocks.org/phoebebright/raw/3176159/
 // pie: http://bl.ocks.org/mbostock/3887235
 // onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
+
 function printAge(x){
 	switch(x){
 				case 1: 
 					return "<= 18 years old"
 					break; 
 				case 2: 
-					return "18~21 years old"
+					return "18 - 21 years old"
 					break; 
 				case 3: 
-					return "21~24 years old"; 
+					return "21 - 24 years old"; 
 					break;
 				case 4: 
-					return "24~27 years old"; 
+					return "24 - 27 years old"; 
 					break; 
 				case 5: 
-					return "over 27 years old";
+					return "Over 27 years old";
 					break;
 				default:
 					return "none";
 				}
 }
+
+
 </script>
 
 </body>

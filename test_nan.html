@@ -3,37 +3,19 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <style>
-html, body { 
-	height: 100%; 
-	width: 100%; 
-	margin: 1%; 
-	font-family: "Open Sans";
-	}
-	
-#barchart {
-	position: absolute;
-	width: 100%; 
-	height: 85%; 
-	opacity:1; 
-	background-color: #fff;
-	}
-	
-#barchartenvelope {
-	position: relative;
-	border: solid black 1px; 
-	width: 40%; 
-	height: 100%; 
-	}
-	
+html, body { height: 100%; width: 100%; margin: 0; }
+#barchart {width: 40%; height: 60%; opacity:1; background-color: #fff;}
 #barbutton {
- 	position: absolute;
-    left: 1%;
-    top: 78%;
-	height: 100px;
+ 	position: relative;
+    left: 30%;
+    top: 30%;
 }
-svg { border: solid black 0px; }
+body { font-family: "Open Sans"; } 
+
+svg { border: solid black 1px; }
 .axis path { fill: none; stroke: #777; }
 .axis line { stroke: #777; }
+
 button {
   border: 2px solid grey;
   background: white;
@@ -49,6 +31,7 @@ button {
  	position: absolute;
     left: 450px;
     top: 50px;
+
 }
 #buttonlist2 {
  	position: absolute;
@@ -63,71 +46,18 @@ button {
 p {
 	line-height: 30%;
 }
-p.title {
-	line-height: 100%;
-}
-#correlation{
-	position: relative;
-	border: solid black 1px;
-}
-/* pie styles */
-.arc path {
-	stroke: #fff;
-}
-#piegroup{
-	position: relative;
-	width: 40%;
-	height: 100%;
-	border: solid black 1px;
-}
-#pie{
-	position: absolute;	
-}
-#pietooltip{
-	position: relative;		
- 	font: 20px sans-serif;	
- 	font-weight:bold;
- 	color: #0D2C3D;
-	width: 10%;
- }
-#pietitle {
-	position: absolute;	
- 	text-align: left;	
-  	font: 18px sans-serif;	
-  	font-weight:bold;
-  	color: black;
-	width: 100%;
- }
-.graphtitle {
-	position: absolute;	
- 	text-align: left;	
-  	font: 18px sans-serif;	
-  	font-weight:bold;
-  	color: black;
-	width: 100%;
- }
-#piebuttonlist {
-  	position: absolute;
-    left: 1%;
-    top: 78%;
-	height: 100px;
-}
+
 </style>
 </head>
 <body>
-<h3>Correlation Between League of Legends (LoL) Gaming Habits and Player Rank</h3>
-<p>Authors: </p>
-<p class="title">In the fall of 2015, one of our project's authors conducted a public survey exploring League of Legends' gamers' perceptions about toxic behavior in the game. Over 400 gamers responded. We visualized these gamers' rank in different game types within LoL to examine correlation.</p>
 
-<div id="correlation">
-<div class="graphtitle">Gamers by Gaming Habits and Rank</div>
 <div id="canvas"></div>
 <div id="buttonlist1">
 <p>Choose time span or frequency:</p>
-<button id="years">How many years playing</button>
+<button id="years">How many years have been played</button>
 </div>
 <div id="buttonlist2">
-<button id="hours">How many hours a week playing</button>
+<button id="hours">How many hours a week</button>
 </div>
 <div id="buttonlist3">
 <p>Choose game type:</p>
@@ -135,11 +65,7 @@ p.title {
 <button id="rank3">5 VS 5</button>
 <button id="rank2">Solo</button>
 </div>
-</div>
-<p>
-<div id = "barchartenvelope" width="100">
-<div id = "barchart"></div>
-<div class="graphtitle">Gamers by Age and Rank</div>
+<div id = "barchart">
 	<div id="barbutton">
 		<p>Choose game type:</p>
 		<button id="barrank1">3 VS 3</button>
@@ -147,19 +73,6 @@ p.title {
 		<button id="barrank2">Solo</button>
 	</div>
 </div>
-<p>
-<div id="piegroup">
-	<div id="pie"></div>
-	<div id="pietitle" ></div>
-	<div id="piebuttonlist">
-	<p>Choose gamer grouping:</p>
-	<button id="age">Age</button>
-	<button id="gender">Gender</button>
-	<button id="country">Country</button>
-	</div>
-	<div id="pietooltip"></div>
-</div>
-
 <script>
 //change these numbers to make it scalable
 var svgheight = 450
@@ -170,21 +83,26 @@ var padding = 80
 var labelFontSize = 15
 var stokeWidth = 5
 var dasharray = "10,10"
+
 var users;
 var xScale;
 var yScale;
+
 var maxYear = 7 //year: 0-6
 var maxHour = 5 //hour: 0-4
 var maxRank = 8 //rank: 0-7
+
 var svg;
 var labels;
 var legend;
-// PIE CONTROLS START
+
 var pwidth = screen.width*0.8,
     pheight = screen.height*0.6,
     radius = Math.min(pwidth, pheight) / 2;
+
 var piecolor = d3.scale.ordinal()
     .range(["#B5d3e2", "#6793AA", "#32627b", "#6793AA"]);
+
 var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.values;});
@@ -192,16 +110,18 @@ var pie = d3.layout.pie()
 var arc = d3.svg.arc()
     .outerRadius(radius - 20)
     .innerRadius(0);
+
 // add a title div to the pie
 var pietitle = d3.select("#piegroup")
 		.append("div") 
 		.attr("id", "pietitle");
+
 // add tooltip div to the pie
 var tooltipdiv = d3.select("#piegroup")
 		.append("div") 
 		.attr("id", "pietooltip");
 // END OF PIE CONTROLS
-// START OF CSV PULL FUNCTION
+
 d3.csv("formatData.csv", function (error, data) {
 	users = data;
 	
@@ -284,6 +204,7 @@ d3.csv("formatData.csv", function (error, data) {
 		//console.log(data);
 			ageRank(data,"rank3");
 		});
+<<<<<<< HEAD
 // START PIE CHART CODE
 	var generatePie = function(pieType) {
 // add pie SVG element
@@ -371,8 +292,10 @@ d3.csv("formatData.csv", function (error, data) {
 		d3.select("#age").style("background","white");
 		});
 // END OF PIE CODE
+=======
+>>>>>>> origin/master
 });
-// END OF CSV PULL FUNCTION
+
 var chooseStyle = function(xx, yy){
 	d3.select("#canvas").select("svg").remove();
 	svg = d3.select("#canvas").append("svg")
@@ -390,12 +313,13 @@ var chooseStyle = function(xx, yy){
 }
 var xtickyear = ["0","<0.5","<1","<2","<3","<4","<5"];
 var xtickhours = ["0","","<5","","<10","","<15","","<20"];
-var yticks = ["Unranked","Bronze","Silver","Gold","Platinum","Diamond","Masters","Challenger"];
+var yticks = ["","Unranked","Bronze","Silver","Gold","Platinum","Diamond","Masters","Challenger"];
 var setXYscale = function(xx, yy){
 	xScale = d3.scale.linear().domain([0,xx])
 	.range([padding, width-padding]);
 	yScale = d3.scale.linear().domain([0, yy])
 	.range([height-padding,padding]);
+
 	var xAxis = d3.svg.axis().scale(xScale)
 	.orient("bottom").tickFormat(function(d,i){
 		if(xx==maxYear)
@@ -415,6 +339,7 @@ var setXYscale = function(xx, yy){
 	.call(yAxis);
 	d3.selectAll(".tick").style("font-size","10");
 }
+
 var setXLabel = function(tt){
 	labels.append("text")						
 		.attr("x", width-padding/2)
@@ -423,6 +348,7 @@ var setXLabel = function(tt){
 		.attr("text-anchor", "middle")		
 		.text(tt);
 }
+
 var setYLabel = function(tt){
 	labels.append("text")
 		.attr("x", padding*3/4)
@@ -431,6 +357,7 @@ var setYLabel = function(tt){
 		.attr("text-anchor", "middle")
 		.text(tt);
 }
+
 var drawSquares = function(xx, yy){
 	var squares = svg.selectAll("rect").data(users)
 		.enter().append("rect");
@@ -448,11 +375,13 @@ var drawSquares = function(xx, yy){
 	}else{
 		squares.attr("y", function(d) { return yScale(d.rank3) })
 	}
+
 	squares.attr("rx", width/50).attr("ry", height/50)
 		.attr("height", function(d) { return (height-padding-padding)/(maxRank+1) })
 		.attr("transform", "translate(0,"+ -(height-padding-padding)/(maxRank+1) + ")" )
 		.attr("opacity", 0.1);
 		
+
 	switch (yy){
 		case "rank1":
 			squares.attr("fill", "green"); break;
@@ -462,6 +391,7 @@ var drawSquares = function(xx, yy){
 			squares.attr("fill", "blue"); break;
 	}
 }
+
 var creatLine = function(xx, yy){
 	var model = {};
 	var meanX;
@@ -522,6 +452,7 @@ var creatLine = function(xx, yy){
 			return (d.hours - meanX) * (d.hours - meanX);
 		});
 	}
+
 	model.intercept = meanY - model.slope * meanX;
 	var regressionLine = svg.append("line")
 							.attr("x1", xScale(0))
@@ -529,6 +460,7 @@ var creatLine = function(xx, yy){
 							.style("stroke", "black")
 							.style("stroke-width", stokeWidth)
 							.style("stroke-dasharray", dasharray);
+
 	if(xx == "years"){
 		regressionLine.attr("x2", xScale(maxYear))
 					.attr("y2", yScale(model.slope * maxYear + model.intercept))
@@ -537,10 +469,13 @@ var creatLine = function(xx, yy){
 					.attr("y2", yScale(model.slope * maxHour+ model.intercept))
 	}
 }
+
+
 	var addLegend = function(xx) {
 		// Add legend	
 		var newwidth = width;
 		var newheight = height-padding*2.2;
+
 		//legend for ranks
 		legend.append("text")
 				.attr("x", newwidth)
@@ -596,6 +531,7 @@ var creatLine = function(xx, yy){
 				.attr("font-size", 12)
 				.attr("alignment-baseline", "middle")
 				.text("0-1: Unranked");
+
 		//legend for years
 		if (xx == "years"){
 		legend.append("text")
@@ -685,6 +621,7 @@ var creatLine = function(xx, yy){
 				.attr("alignment-baseline", "middle")
 				.text("4-5: More than 20 hours");
 		}
+
 	}
 		function ageblock (x){
 			if(x<=18) return 1;
@@ -760,6 +697,7 @@ var creatLine = function(xx, yy){
  						console.log(d.gender);
  					});
 		}
+<<<<<<< HEAD
 	function printAge(x){
 	switch(x){
 				case 1: 
@@ -785,6 +723,8 @@ var creatLine = function(xx, yy){
 // nesting: http://bl.ocks.org/phoebebright/raw/3176159/
 // pie: http://bl.ocks.org/mbostock/3887235
 // onclick + tooltip: http://jsfiddle.net/rrvtechdiamond/t5S3F/1/
+=======
+>>>>>>> origin/master
 </script>
 
 </body>
